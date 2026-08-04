@@ -1,6 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+char *lsh_read_line(void)
+{
+  char *line = NULL;  // so the variable doesn't store any garbage value
+  size_t bufsize = 0; // have getline allocate a buffer for us
+
+  if (getline(&line, &bufsize, stdin) == -1)
+  {
+    if (feof(stdin)) 
+    {
+      exit(EXIT_SUCCESS);  // We recieved an EOF
+    } 
+    else  
+    {
+      perror("readline");
+      exit(EXIT_FAILURE);
+    }
+  }
+
+  return line;
+}
+
 void lsh_loop(void)
 {
     char * line;

@@ -15,6 +15,7 @@
 int lsh_cd(char **args);
 int lsh_help(char **args);
 int lsh_exit(char **args);
+int lsh_pwd(char **args);
 
 /*
   List of builtin commands, followed by their corresponding functions.
@@ -22,19 +23,22 @@ int lsh_exit(char **args);
 char *builtin_str[] = {  //array of strings likw char**
   "cd",
   "help",
-  "exit"
+  "exit",
+  "pwd"
 };
 
 /*
 builtin_func[0] = lsh_cd
 builtin_func[1] = lsh_help
 builtin_func[2] = lsh_exit
+builtin_func[3] = lsh_pwd
 */
 
 int (*builtin_func[]) (char **) = {
   &lsh_cd,
   &lsh_help,
-  &lsh_exit
+  &lsh_exit,
+  &lsh_pwd
 };
 
 int lsh_num_builtins() {
@@ -80,6 +84,23 @@ int lsh_help(char **args)
 int lsh_exit(char **args)
 {
   return 0;
+}
+
+int lsh_pwd(char **args) 
+{
+    (void)args;
+    char cwd[1024];
+
+    if (getcwd(cwd, sizeof(cwd)) != NULL) 
+    {
+        printf("%s\n", cwd);
+    } 
+    else 
+    {
+        perror("lsh");
+    }
+    
+    return 1;
 }
 
 char *lsh_read_line(void)

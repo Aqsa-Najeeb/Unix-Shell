@@ -8,8 +8,37 @@ The shell runs a simple loop:
 1. **Parse** – splits the line into tokens (whitespace-separated words) to build an argument list.
 1. **Execute** – checks if the first token is a built-in command; if not, it `fork()`s a child process and uses `execvp()` to run the program, while the parent waits for it to finish.
 
-
 This loop repeats until the user runs `exit` or sends EOF (Ctrl+D).
+
+### Functions and their Header Files
+
+- #include <sys/wait.h>
+   - waitpid() and associated macros
+
+- #include <unistd.h>
+   - chdir()
+   - fork()
+   - exec()
+   - pid_t
+
+- #include <stdlib.h>
+   - malloc()
+   - realloc()
+   - free()
+   - exit()
+   - execvp()
+   - EXIT_SUCCESS, EXIT_FAILURE
+
+- #include <stdio.h>
+   - fprintf()
+   - printf()
+   - stderr
+   - getchar()
+   - perror()
+
+- #include <string.h>
+   - strcmp()
+   - strtok()
 
 ## Builtin Commands
 

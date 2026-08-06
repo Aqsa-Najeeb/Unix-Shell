@@ -6,6 +6,80 @@
 #define LSH_TOK_BUFSIZE 64
 #define LSH_TOK_DELIM " \t\r\n\a"
 
+
+/*
+  Function Declarations for builtin shell commands:
+ */
+int lsh_cd(char **args);
+int lsh_help(char **args);
+int lsh_exit(char **args);
+
+/*
+  List of builtin commands, followed by their corresponding functions.
+ */
+char *builtin_str[] = {  //array of strings likw char**
+  "cd",
+  "help",
+  "exit"
+};
+
+/*
+builtin_func[0] = lsh_cd
+builtin_func[1] = lsh_help
+builtin_func[2] = lsh_exit
+*/
+
+int (*builtin_func[]) (char **) = {
+  &lsh_cd,
+  &lsh_help,
+  &lsh_exit
+};
+
+int lsh_num_builtins() {
+  return sizeof(builtin_str) / sizeof(char *);
+}
+
+/*
+  Builtin function implementations.
+*/
+int lsh_cd(char **args)
+{
+  if (args[1] == NULL) 
+  {
+    fprintf(stderr, "lsh: expected argument to \"cd\"\n");
+  } 
+  else
+   {
+    if (chdir(args[1]) != 0)  //-1 is error
+    {
+
+      perror("lsh");
+    }
+  }
+  return 1;
+}
+
+int lsh_help(char **args)
+{
+  int i;
+  printf("Aqsa Najeeb's Unix Shell\n");
+  printf("Type program names and arguments, and hit enter.\n");
+  printf("The following are built in:\n");
+
+  for (i = 0; i < lsh_num_builtins(); i++) 
+  {
+    printf("  %s\n", builtin_str[i]);
+  }
+
+  printf("Use the man command for information on other programs.\n");
+  return 1;
+}
+
+int lsh_exit(char **args)
+{
+  return 0;
+}
+
 char *lsh_read_line(void)
 {
   char *line = NULL;  // so the variable doesn't store any garbage value
